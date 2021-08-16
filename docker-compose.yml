@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+    db:
+      image: mysql:8.0.23
+      restart: always
+      environment:
+        MYSQL_USER: root
+        MYSQL_ROOT_PASSWORD: toor
+        MYSQL_PASSWORD: toor
+        MYSQL_DATABASE: book-site-db
+      ports:
+        - "3307:3306"
+      volumes: 
+        - .data/db:/var/lib/mysql
+
+    
+    web:
+      build: 
+        context : .
+        dockerfile: Dockerfile
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
+      
+
