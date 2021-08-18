@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from .models import ReadingListModel
+from .serializers import ReadingListSerializer
+from rest_framework import generics
 
-# Create your views here.
+
+class ReadingListView(generics.ListCreateAPIView):
+    queryset = ReadingListModel.objects.all()
+    serializer_class = ReadingListSerializer
