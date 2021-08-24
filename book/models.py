@@ -1,28 +1,53 @@
-from django.db import models
+from account.models import UserModel
 from author.models import AuthorModel
+from django.db import models
 
 
-class TypeOfBookModel(models.Model):
-    name = models.CharField(max_length=50)
+class CountryModel(models.Model):
+    name = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.name
+
+class LanguageModel(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class PublisherModel(models.Model):
+    name = models.CharField(max_length=250)
 
 
 class BookModel(models.Model):
-    name = models.CharField(max_length=100)
+    author = models.ForeignKey(AuthorModel, on_delete=models.DO_NOTHING)
+    language = models.ForeignKey(LanguageModel, on_delete=models.DO_NOTHING)
+    country = models.ForeignKey(CountryModel, on_delete=models.DO_NOTHING)
+    publisher = models.ForeignKey(PublisherModel, on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=250)
     image = models.ImageField(null=True, blank=True)
-    author = models.ForeignKey(AuthorModel, on_delete=models.CASCADE)
-    typeofbook = models.ManyToManyField(TypeOfBookModel)
     page_number = models.IntegerField()
-    language = models.CharField(max_length=50)
-    country = models.CharField(max_length=50)
-    publisher = models.CharField(max_length=100)
+    material = models.CharField(max_length=100)
+    date = models.DateTimeField()
     book_summary = models.TextField()
 
     def __str__(self):
         return self.name
 
 
+class TypeModel(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class TypeOfBookModel(models.Model):
+    type = models.ForeignKey(TypeModel, on_delete=models.DO_NOTHING)
+    book = models.ForeignKey(BookModel, on_delete=models.DO_NOTHING)
+
+
 class ReadingListModel(models.Model):
-    book = models.ManyToManyField(BookModel)
+    user = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING)
+    book = models.ForeignKey(BookModel, on_delete=models.DO_NOTHING)
+
+
+class UserBook(models.Model):
+    user = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING)
+    book = models.ForeignKey(BookModel, on_delete=models.DO_NOTHING)
+    read_time = models.IntegerField(null=True, blank=True)
+    read = models.BooleanField(default=False)
+    like = models.BooleanField(default=False)
