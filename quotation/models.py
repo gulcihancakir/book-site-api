@@ -4,10 +4,8 @@ from django.db import models
 
 
 class QuotationModel(models.Model):
-    title = models.CharField(max_length=100, null=True, blank=True)
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING)
+    book = models.ForeignKey(BookModel, on_delete=models.DO_NOTHING)
     quotation = models.TextField()
-    book = models.ForeignKey(BookModel, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
+    quotation_page = models.IntegerField(null=True, blank=True)
+    published_date = models.DateTimeField()
