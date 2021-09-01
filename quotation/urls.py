@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('quotation', views.QuotationView.as_view()),
-    path('quotation/add', views.QuotationPostView.as_view()),
-   
+    path('', views.QuotationView.as_view()),
+    path('add', views.QuotationPostView.as_view()),
+    path('detail/<int:pk>', views.QuotationDetailView.as_view()),
+    path('update-delete/<int:pk>', views.QuotationUpdateDestroyView.as_view()),
 ]
