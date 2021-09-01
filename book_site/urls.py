@@ -22,9 +22,10 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('', include('book.urls')),
-    path('', include('author.urls')),
-    path('', include('quotation.urls')),
-    path('', include('account.urls')),
-    path('', include('review.urls')),
+    path('rest-auth/', include('rest_auth.urls')),
+    path('account/', include('account.urls')),
+    path('author/', include('author.urls')),
+    path('book/', include('book.urls')),
+    path('quotation/', include('quotation.urls')),
+    path('review/', include('review.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
