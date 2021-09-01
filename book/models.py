@@ -1,6 +1,8 @@
+from django.db.models.fields import IntegerField
 from account.models import UserModel
 from author.models import AuthorModel
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class CountryModel(models.Model):
@@ -30,6 +32,12 @@ class BookModel(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['author', 'publisher', 'name'], name='same_book_bookmodel_constraints')
+        ]
+
 
 class TypeModel(models.Model):
     name = models.CharField(max_length=100)
@@ -44,6 +52,12 @@ class ReadingListModel(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING)
     book = models.ForeignKey(BookModel, on_delete=models.DO_NOTHING)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['book', 'user'], name='same_book_readinglistmodel_constraints')
+        ]
+
 
 class UserBook(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING)
@@ -51,3 +65,5 @@ class UserBook(models.Model):
     read_time = models.IntegerField(null=True, blank=True)
     read = models.BooleanField(default=False)
     like = models.BooleanField(default=False)
+    rate = IntegerField(default=0, validators=[
+                        MaxValueValidator(10), MinValueValidator(0)])
