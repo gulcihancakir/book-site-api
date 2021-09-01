@@ -1,24 +1,47 @@
-from book.serializers import ReadingListSerializer
-from .models import UserModel
+from book.models import ReadingListModel
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
-# Serializers define the API representation.
+from .models import UserModel
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'password']
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
-        style={'input_type': 'password'})
+    user = UserSerializer()
 
     class Meta:
         model = UserModel
-        fields = ['first_name', 'last_name', 'username',
-                  'email', 'password', 'gender', 'birthdate']
+        fields = ['id', 'user', 'gender', 'birth_date', 'picture']
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = User.objects.create_user(**user_data)
+        validated_data['user'] = user
+        usermodel = UserModel.objects.create(**validated_data)
+        return usermodel
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
-    readinglist=ReadingListSerializer()
+    class Meta:
+        model = ReadingListModel
+        fields = ['user', 'book']
+
+
+class UserSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email']
+
+
+class UserModelDetailSearchSerializer(serializers.ModelSerializer):
+    user = UserSearchSerializer()
+
     class Meta:
         model = UserModel
-        fields = ['read', 'readinglist']
-
-    
+        fields = ['user', 'gender', 'birth_date', 'picture']
