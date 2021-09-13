@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
+    'rest_auth',
+    'rest_framework.authtoken',
     'account',
     'book',
     'author',
@@ -45,6 +48,8 @@ INSTALLED_APPS = [
     'review'
     
 ]
+SITE_ID = 1
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,36 +79,46 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'book_site.wsgi.application'
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        # 'rest_framework.permissions.DjangoModelPermissions',
-    ]
+    #   'rest_framework.permissions.IsAuthenticated',
+        
+    
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',     
+        'rest_framework.authentication.TokenAuthentication',
+
+    ],
 }
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'book-site-db',
-#         'USER': 'root',
-#         'PASSWORD': 'toor',
-#         'HOST': 'db',
-#         'PORT': 3306
-#     }
-# }
+
 DATABASES = {
     'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'db',
+        'NAME': 'mysql',
+        'USER': 'root',
+        'PASSWORD': 'mysql',
+        'PORT': 3306,
+    },
 }
+# DATABASES = {
+#     'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -148,7 +163,9 @@ STATICFILES_DIRS = [
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = BASE_DIR / "book_site" / "media"
 
+MEDIA_URL = "/media/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

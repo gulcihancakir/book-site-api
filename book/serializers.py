@@ -1,5 +1,6 @@
+from django.db.models import fields
 from rest_framework import serializers
-from .models import BookModel, ReadingListModel, TypeOfBookModel
+from .models import BookModel, ReadingListModel, TypeOfBookModel, UserBook
 
 
 class TypeOfBookSerializer(serializers.ModelSerializer):
@@ -9,17 +10,41 @@ class TypeOfBookSerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    typeofbook = TypeOfBookSerializer(many=True, read_only=True)
-
+  
     class Meta:
         model = BookModel
-        fields = ['name', 'image', 'page_number',
-                  'language', 'country', 'publisher', 'typeofbook', 'author']
+        fields = ['id', 'name', 'image', 'page_number',
+                  'language', 'country', 'publisher', 'author']
 
 
-class ReadingListSerializer(serializers.ModelSerializer):
-    book = BookSerializer(many=True, read_only=True)
 
+class ReadingPostSerializer(serializers.ModelSerializer):
+   
     class Meta:
         model = ReadingListModel
         fields = ['book']
+
+class ReadingDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReadingListModel
+        fields = ['user', 'book']
+
+class ReadsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserBook
+        fields = ['book', 'read_time', 'read', 'like', 'rate']
+
+class ReadsDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserBook
+        fields = ['book', 'read_time', 'read', 'like', 'rate']
+
+class BookSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookModel
+        fields = '__all__'
+
+class TypeOfBookModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TypeOfBookModel
+        fields = ['type','book']
