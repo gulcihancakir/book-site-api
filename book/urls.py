@@ -8,5 +8,6 @@ urlpatterns = [
     path('reading-delete/<int:pk>', views.ReadingListDeleteView.as_view()),
     path('reads-delete/<int:pk>', views.ReadsDeleteView.as_view()),
     path('search/<str:name>', views.BookSearchView.as_view()),    
+    path('suggest/<int:pk>', views.SuggestView.as_view()),    
     
 ]

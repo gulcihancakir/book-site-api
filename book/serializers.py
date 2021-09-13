@@ -43,3 +43,8 @@ class BookSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookModel
         fields = '__all__'
+
+class TypeOfBookModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TypeOfBookModel
+        fields = ['type','book']
