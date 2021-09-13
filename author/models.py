@@ -6,7 +6,7 @@ class AuthorModel(models.Model):
     unvan = models.CharField(max_length=250)
     birth = models.CharField(max_length=250)
     death = models.CharField(max_length=250)
-    life = models.TextField()
+    life = models.CharField(max_length=500)
     
 
     def __str__(self):
