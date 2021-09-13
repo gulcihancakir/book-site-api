@@ -11,6 +11,8 @@ RUN apt-get install -y --no-install-recommends \
     mysql-client \
     default-libmysqlclient-dev && \
     rm -rf /var/lib/apt/lists/*
+RUN pip install --upgrade pip
+
 RUN pip install -r requirements.txt 
+    
 COPY . /app
-CMD ["python", "manage.py", "runserver", "127.0.0.1:8000"]
