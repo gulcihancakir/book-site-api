@@ -27,7 +27,7 @@ class BookModel(models.Model):
     page_number = models.IntegerField()
     material = models.CharField(max_length=100)
     date = models.DateTimeField()
-    book_summary = models.TextField()
+    book_summary = models.CharField(max_length=500)
 
     def __str__(self):
         return self.name
